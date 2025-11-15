@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+.r1 {font-weight: bold}
+.r2 {color: #d0b344; text-decoration-color: #d0b344; font-weight: bold}
+.r3 {color: #d0b344; text-decoration-color: #d0b344; font-style: italic}
+.r4 {color: #cc555a; text-decoration-color: #cc555a}
+.r5 {color: #98a84b; text-decoration-color: #98a84b; font-weight: bold}
+.r6 {color: #98a84b; text-decoration-color: #98a84b}
+.r7 {color: #c5c8c6; text-decoration-color: #c5c8c6}
+.r8 {color: #c5c8c6; text-decoration-color: #c5c8c6; font-weight: bold}
+.r9 {color: #626463; text-decoration-color: #626463}
+.r10 {color: #608ab1; text-decoration-color: #608ab1}
+.r11 {color: #c5c8c6; text-decoration-color: #c5c8c6; font-style: italic}
+.r12 {color: #cc555a; text-decoration-color: #cc555a; font-weight: bold}
+.r13 {color: #98729f; text-decoration-color: #98729f; font-weight: bold}
+.r14 {color: #68a0b3; text-decoration-color: #68a0b3}
+body {
+    color: #c5c8c6;
+    background-color: #000000;
+}
+</style>
+</head>
+<body>
+    <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><code style="font-family:inherit"><span class="r1">Domain: </span><span class="r2">openapi_markdown</span>
+
+Description: <span class="r3">Retrieve markdown using OpenAPI</span>
+
+Main Pipe: <span class="r4">retrieve_markdown_content</span>
+
+
+
+<span class="r5">                                         Concepts                                          </span>
+<span class="r6">┌─────────────────────────────────────────────────────────────────────────────────────────┐</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r8">Concept: </span><span class="r5">ApiRequestParams</span><span class="r8">                                                              </span><span class="r7"> </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7">                                                                                         </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> Description: </span><span class="r3">Structured object containing parameters for the API request.</span><span class="r7">               </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7">                                                                                         </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r7">Structure:                                                                             </span><span class="r7"> </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r9">┏━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━━━┓</span><span class="r7"> </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r9">┃ Field    ┃ Description                                            ┃ Type ┃ Required ┃</span><span class="r7"> </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r9">┡━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━╇━━━━━━━━━━┩</span><span class="r7"> </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r9">│</span><span class="r10"> endpoint </span><span class="r9">│</span><span class="r11"> The endpoint URL for the API request.                  </span><span class="r9">│</span><span class="r7"> text </span><span class="r9">│</span><span class="r7"> Yes      </span><span class="r9">│</span><span class="r7"> </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r9">├──────────┼────────────────────────────────────────────────────────┼──────┼──────────┤</span><span class="r7"> </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r9">│</span><span class="r10"> method   </span><span class="r9">│</span><span class="r11"> The HTTP method for the API request (e.g., GET, POST). </span><span class="r9">│</span><span class="r7"> text </span><span class="r9">│</span><span class="r7"> Yes      </span><span class="r9">│</span><span class="r7"> </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r9">├──────────┼────────────────────────────────────────────────────────┼──────┼──────────┤</span><span class="r7"> </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r9">│</span><span class="r10"> headers  </span><span class="r9">│</span><span class="r11"> Any specific headers required for the API request.     </span><span class="r9">│</span><span class="r7"> text </span><span class="r9">│</span><span class="r7"> No       </span><span class="r9">│</span><span class="r7"> </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r9">├──────────┼────────────────────────────────────────────────────────┼──────┼──────────┤</span><span class="r7"> </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r9">│</span><span class="r10"> body     </span><span class="r9">│</span><span class="r11"> The request body if needed.                            </span><span class="r9">│</span><span class="r7"> text </span><span class="r9">│</span><span class="r7"> No       </span><span class="r9">│</span><span class="r7"> </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r9">└──────────┴────────────────────────────────────────────────────────┴──────┴──────────┘</span><span class="r7"> </span><span class="r6">│</span>
+<span class="r6">├─────────────────────────────────────────────────────────────────────────────────────────┤</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r8">Concept: </span><span class="r5">MarkdownContent</span><span class="r8">                                                               </span><span class="r7"> </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> Refines: </span><span class="r6">Text</span><span class="r7">                                                                           </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7">                                                                                         </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> Description:                                                                            </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7">                                                                                         </span><span class="r6">│</span>
+<span class="r6">├─────────────────────────────────────────────────────────────────────────────────────────┤</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r8">Concept: </span><span class="r5">RefinedMarkdown</span><span class="r8">                                                               </span><span class="r7"> </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> Refines: </span><span class="r6">Text</span><span class="r7">                                                                           </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7">                                                                                         </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> Description:                                                                            </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7">                                                                                         </span><span class="r6">│</span>
+<span class="r6">├─────────────────────────────────────────────────────────────────────────────────────────┤</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r8">Concept: </span><span class="r5">OpenApiSchema</span><span class="r8">                                                                 </span><span class="r7"> </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7">                                                                                         </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> Description: </span><span class="r3">The OpenAPI schema used to define the backend API.</span><span class="r7">                         </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7">                                                                                         </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r7">Structure:                                                   </span><span class="r7">                           </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r9">┏━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━━━┓</span><span class="r7">                           </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r9">┃ Field  ┃ Description                    ┃ Type ┃ Required ┃</span><span class="r7">                           </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r9">┡━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━╇━━━━━━━━━━┩</span><span class="r7">                           </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r9">│</span><span class="r10"> url    </span><span class="r9">│</span><span class="r11"> The URL of the OpenAPI schema. </span><span class="r9">│</span><span class="r7"> text </span><span class="r9">│</span><span class="r7"> Yes      </span><span class="r9">│</span><span class="r7">                           </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r9">├────────┼────────────────────────────────┼──────┼──────────┤</span><span class="r7">                           </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r9">│</span><span class="r10"> schema </span><span class="r9">│</span><span class="r11"> The schema definition.         </span><span class="r9">│</span><span class="r7"> text </span><span class="r9">│</span><span class="r7"> Yes      </span><span class="r9">│</span><span class="r7">                           </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r9">└────────┴────────────────────────────────┴──────┴──────────┘</span><span class="r7">                           </span><span class="r6">│</span>
+<span class="r6">├─────────────────────────────────────────────────────────────────────────────────────────┤</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r8">Concept: </span><span class="r5">WebsiteUrl</span><span class="r8">                                                                    </span><span class="r7"> </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> Refines: </span><span class="r6">Text</span><span class="r7">                                                                           </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7">                                                                                         </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> Description:                                                                            </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7">                                                                                         </span><span class="r6">│</span>
+<span class="r6">├─────────────────────────────────────────────────────────────────────────────────────────┤</span>
+<span class="r6">│</span><span class="r7"> </span><span class="r8">Concept: </span><span class="r5">FinalMarkdownOutput</span><span class="r8">                                                           </span><span class="r7"> </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> Refines: </span><span class="r6">Text</span><span class="r7">                                                                           </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7">                                                                                         </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7"> Description:                                                                            </span><span class="r6">│</span>
+<span class="r6">│</span><span class="r7">                                                                                         </span><span class="r6">│</span>
+<span class="r6">└─────────────────────────────────────────────────────────────────────────────────────────┘</span>
+
+
+<span class="r12">                                               Pipes                                                </span>
+<span class="r4">┌──────────────────────────────────────────────────────────────────────────────────────────────────┐</span>
+<span class="r4">│</span><span class="r7"> Pipe: </span><span class="r12">retrieve_markdown_content</span><span class="r7">                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> Type: </span><span class="r13">PipeSequence</span><span class="r7"> (PipeController)                                                              </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> Description: </span><span class="r3">Main pipeline to retrieve markdown content from the target website using the </span><span class="r7">       </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r3">OpenAPI backend API.</span><span class="r7">                                                                             </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r7">Inputs:                                     </span><span class="r7">                                                     </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">┌──────────────────────────┬───────────────┐</span><span class="r7">                                                     </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">│</span><span class="r14"> validated_openapi_schema </span><span class="r9">│</span><span class="r5"> OpenApiSchema </span><span class="r9">│</span><span class="r7">                                                     </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">├──────────────────────────┼───────────────┤</span><span class="r7">                                                     </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">│</span><span class="r14"> target_website_url       </span><span class="r9">│</span><span class="r5"> WebsiteUrl    </span><span class="r9">│</span><span class="r7">                                                     </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">└──────────────────────────┴───────────────┘</span><span class="r7">                                                     </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> Output: </span><span class="r5">RefinedMarkdown</span><span class="r7">                                                                          </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r7">Sequence Steps:                                        </span><span class="r7">                                          </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓</span><span class="r7">                                          </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">┃ Step ┃ Pipe                    ┃ Result name        ┃</span><span class="r7">                                          </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩</span><span class="r7">                                          </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">│    1 │</span><span class="r4"> prepare_api_request     </span><span class="r9">│</span><span class="r14"> api_request_params </span><span class="r9">│</span><span class="r7">                                          </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">├──────┼─────────────────────────┼────────────────────┤</span><span class="r7">                                          </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">│    2 │</span><span class="r4"> use_openapi_backend_api </span><span class="r9">│</span><span class="r14"> markdown_content   </span><span class="r9">│</span><span class="r7">                                          </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">├──────┼─────────────────────────┼────────────────────┤</span><span class="r7">                                          </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">│    3 │</span><span class="r4"> refine_markdown         </span><span class="r9">│</span><span class="r14"> refined_markdown   </span><span class="r9">│</span><span class="r7">                                          </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">└──────┴─────────────────────────┴────────────────────┘</span><span class="r7">                                          </span><span class="r4">│</span>
+<span class="r4">├──────────────────────────────────────────────────────────────────────────────────────────────────┤</span>
+<span class="r4">│</span><span class="r7"> Pipe: </span><span class="r12">validate_openapi_schema</span><span class="r7">                                                                    </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> Type: </span><span class="r13">PipeLLM</span><span class="r7"> (PipeOperator)                                                                     </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> Description: </span><span class="r3">Validate and transform the OpenAPI schema URL.</span><span class="r7">                                      </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> Input: </span><span class="r14">openapi_schema_url</span><span class="r7"> (</span><span class="r5">Text</span><span class="r7">)                                                                 </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> Output: </span><span class="r5">OpenApiSchema</span><span class="r7">                                                                            </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> LLM Skill: </span><span class="r2">llm_to_retrieve</span><span class="r7">                                                                       </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r10">╭─ System Prompt ──────────────────────────────────────────────────────────────────────────────╮</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r10">│</span><span class="r7"> You are tasked with validating and transforming an OpenAPI schema URL into a structured      </span><span class="r10">│</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r10">│</span><span class="r7"> OpenAPI schema object. Please retrieve the OpenAPI schema from the provided URL and return   </span><span class="r10">│</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r10">│</span><span class="r7"> it in a structured format.                                                                   </span><span class="r10">│</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r10">╰──────────────────────────────────────────────────────────────────────────────────────────────╯</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r6">╭─ Prompt ─────────────────────────────────────────────────────────────────────────────────────╮</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r6">│</span><span class="r7"> Validate and transform the OpenAPI schema URL: $openapi_schema_url. Provide the OpenAPI      </span><span class="r6">│</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r6">│</span><span class="r7"> schema in a structured format.                                                               </span><span class="r6">│</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r6">╰──────────────────────────────────────────────────────────────────────────────────────────────╯</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">├──────────────────────────────────────────────────────────────────────────────────────────────────┤</span>
+<span class="r4">│</span><span class="r7"> Pipe: </span><span class="r12">prepare_api_request</span><span class="r7">                                                                        </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> Type: </span><span class="r13">PipeLLM</span><span class="r7"> (PipeOperator)                                                                     </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> Description: </span><span class="r3">Construct the API request to retrieve markdown for the target website.</span><span class="r7">              </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r7">Inputs:                                     </span><span class="r7">                                                     </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">┌──────────────────────────┬───────────────┐</span><span class="r7">                                                     </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">│</span><span class="r14"> validated_openapi_schema </span><span class="r9">│</span><span class="r5"> OpenApiSchema </span><span class="r9">│</span><span class="r7">                                                     </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">├──────────────────────────┼───────────────┤</span><span class="r7">                                                     </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">│</span><span class="r14"> target_website_url       </span><span class="r9">│</span><span class="r5"> WebsiteUrl    </span><span class="r9">│</span><span class="r7">                                                     </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">└──────────────────────────┴───────────────┘</span><span class="r7">                                                     </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> Output: </span><span class="r5">ApiRequestParams</span><span class="r7">                                                                         </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> LLM Skill: </span><span class="r2">llm_to_answer_questions_cheap</span><span class="r7">                                                         </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r10">╭─ System Prompt ──────────────────────────────────────────────────────────────────────────────╮</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r10">│</span><span class="r7"> Generate a structured object containing parameters for the API request to retrieve markdown  </span><span class="r10">│</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r10">│</span><span class="r7"> for the target website. The parameters should include endpoint, method, headers, and body.   </span><span class="r10">│</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r10">╰──────────────────────────────────────────────────────────────────────────────────────────────╯</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r6">╭─ Prompt ─────────────────────────────────────────────────────────────────────────────────────╮</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r6">│</span><span class="r7"> Create an API request to retrieve markdown for $target_website_url using the OpenAPI schema  </span><span class="r6">│</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r6">│</span><span class="r7"> at $validated_openapi_schema. Provide the endpoint, method, headers, and body as needed.     </span><span class="r6">│</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r6">╰──────────────────────────────────────────────────────────────────────────────────────────────╯</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">├──────────────────────────────────────────────────────────────────────────────────────────────────┤</span>
+<span class="r4">│</span><span class="r7"> Pipe: </span><span class="r12">use_openapi_backend_api</span><span class="r7">                                                                    </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> Type: </span><span class="r13">PipeLLM</span><span class="r7"> (PipeOperator)                                                                     </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> Description: </span><span class="r3">Use the service exposed as an OpenAPI backend API to retrieve markdown.</span><span class="r7">             </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r7">Inputs:                                        </span><span class="r7">                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">┌──────────────────────────┬──────────────────┐</span><span class="r7">                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">│</span><span class="r14"> validated_openapi_schema </span><span class="r9">│</span><span class="r5"> OpenApiSchema    </span><span class="r9">│</span><span class="r7">                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">├──────────────────────────┼──────────────────┤</span><span class="r7">                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">│</span><span class="r14"> api_request_params       </span><span class="r9">│</span><span class="r5"> ApiRequestParams </span><span class="r9">│</span><span class="r7">                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r9">└──────────────────────────┴──────────────────┘</span><span class="r7">                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> Output: </span><span class="r5">MarkdownContent</span><span class="r7">                                                                          </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> LLM Skill: </span><span class="r2">llm_to_retrieve</span><span class="r7">                                                                       </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r10">╭─ System Prompt ──────────────────────────────────────────────────────────────────────────────╮</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r10">│</span><span class="r7"> You are tasked with retrieving markdown content from an OpenAPI backend API. The API schema  </span><span class="r10">│</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r10">│</span><span class="r7"> and request parameters are provided. Please generate the markdown content.                   </span><span class="r10">│</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r10">╰──────────────────────────────────────────────────────────────────────────────────────────────╯</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r6">╭─ Prompt ─────────────────────────────────────────────────────────────────────────────────────╮</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r6">│</span><span class="r7"> Use the OpenAPI backend API to retrieve markdown content based on the provided API schema    </span><span class="r6">│</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r6">│</span><span class="r7"> and request parameters. The API schema is: @validated_openapi_schema. The request parameters </span><span class="r6">│</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r6">│</span><span class="r7"> are: @api_request_params. Please be concise and provide the markdown content.                </span><span class="r6">│</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r6">╰──────────────────────────────────────────────────────────────────────────────────────────────╯</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">├──────────────────────────────────────────────────────────────────────────────────────────────────┤</span>
+<span class="r4">│</span><span class="r7"> Pipe: </span><span class="r12">refine_markdown</span><span class="r7">                                                                            </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> Type: </span><span class="r13">PipeLLM</span><span class="r7"> (PipeOperator)                                                                     </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> Description: </span><span class="r3">Potentially refine or extract specific parts of the markdown content.</span><span class="r7">               </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> Input: </span><span class="r14">markdown_content</span><span class="r7"> (</span><span class="r5">MarkdownContent</span><span class="r7">)                                                        </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> Output: </span><span class="r5">RefinedMarkdown</span><span class="r7">                                                                          </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> LLM Skill: </span><span class="r2">llm_for_writing_cheap</span><span class="r7">                                                                 </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r10">╭─ System Prompt ──────────────────────────────────────────────────────────────────────────────╮</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r10">│</span><span class="r7"> Refine the provided markdown content to ensure it is concise and relevant. The output should </span><span class="r10">│</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r10">│</span><span class="r7"> be a refined version of the markdown.                                                        </span><span class="r10">│</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r10">╰──────────────────────────────────────────────────────────────────────────────────────────────╯</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7">                                                                                                  </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r6">╭─ Prompt ─────────────────────────────────────────────────────────────────────────────────────╮</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r6">│</span><span class="r7"> Please refine the following markdown content: @markdown_content. Make sure to be concise and </span><span class="r6">│</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r6">│</span><span class="r7"> focus on the key points.                                                                     </span><span class="r6">│</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">│</span><span class="r7"> </span><span class="r6">╰──────────────────────────────────────────────────────────────────────────────────────────────╯</span><span class="r7"> </span><span class="r4">│</span>
+<span class="r4">└──────────────────────────────────────────────────────────────────────────────────────────────────┘</span>
+</code></pre>
+</body>
+</html>

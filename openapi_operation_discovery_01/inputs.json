@@ -1,0 +1,10 @@
+{
+  "openapi_json_spec": {
+    "concept": "openapi_function_builder.OpenAPIURL",
+    "content": "openapi_url"
+  },
+  "operation_to_accomplish": {
+    "concept": "openapi_function_builder.OperationToAccomplish",
+    "content": "operation_to_accomplish_text"
+  }
+}
