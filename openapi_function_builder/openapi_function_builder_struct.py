@@ -1,3 +1,5 @@
+import json
+
 import requests
 import inspect
 from openapiclient import OpenAPIClient
@@ -85,10 +87,7 @@ async def obtain_openapi_spec(working_memory: WorkingMemory) -> TextContent:
                     # Check for request body
                     if 'requestBody' in operation:
                         body_required = operation['requestBody'].get('required', False)
-                        if body_required:
-                            params.append("body")
-                        else:
-                            params.append("body=None")
+                        params.append("body="+json.dumps(operation['requestBody']))
 
                     params_str = ", ".join(params) if params else ""
                     functions_detail.append(f"{operation_id}({params_str})")
@@ -100,5 +99,5 @@ async def obtain_openapi_spec(working_memory: WorkingMemory) -> TextContent:
 
         functions_text = "\n".join(functions_detail)
         spec = f"\n\nAvailable functions:\n{functions_text}"
-        print(spec)
+
     return TextContent(text=spec)
