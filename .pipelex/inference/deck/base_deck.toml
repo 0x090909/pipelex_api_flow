@@ -17,7 +17,7 @@
 ####################################################################################################
 
 [aliases]
-base-claude = "meta-llama/llama-4-scout-17b-16e-instruct"
+base-claude = "claude-4.5-sonnet"
 base-gpt = "gpt-4o"
 base-gemini = "gemini-2.5-flash"
 base-mistral = "mistral-medium"
@@ -44,7 +44,7 @@ fast-img-gen = "fast-lightning-sdxl"
 
 [waterfalls]
 smart_llm = [
-    "meta-llama/llama-4-scout-17b-16e-instruct",
+    "claude-4.5-sonnet",
     "claude-4.1-opus",
     "claude-4-sonnet",
     "gemini-2.5-pro",
@@ -52,7 +52,7 @@ smart_llm = [
     "grok-3",
 ]
 smart_llm_with_vision = [
-    "meta-llama/llama-4-scout-17b-16e-instruct",
+    "claude-4.5-sonnet",
     "claude-4.1-opus",
     "claude-4-sonnet",
     "gemini-2.5-pro",
@@ -60,7 +60,7 @@ smart_llm_with_vision = [
     "grok-3",
 ]
 smart_llm_for_structured = [
-    "meta-llama/llama-4-scout-17b-16e-instruct",
+    "claude-4.5-sonnet",
     "claude-4.1-opus",
     "claude-4-sonnet",
     "gpt-4o",            # we use gpt-4o here rather than gpt-5 until we handle reasoning parameters
@@ -68,13 +68,12 @@ smart_llm_for_structured = [
 llm_for_creativity = ["claude-4.1-opus", "gemini-2.5-pro", "gpt-4o"]
 llm_for_large_codebase = [
     "gemini-2.5-pro",
-    "meta-llama/llama-4-scout-17b-16e-instruct",
+    "claude-4.5-sonnet",
     "gpt-4o",            # we use gpt-4o here rather than gpt-5 until we handle reasoning parameters
     "gemini-2.5-flash",
     "grok-3",
 ]
 cheap_llm = [
-    "llama-3.1-8b-instant",
     "gpt-4o-mini",
     "gemini-2.5-flash-lite",
     "mistral-small",
@@ -82,15 +81,13 @@ cheap_llm = [
     "grok-3-mini",
 ]
 cheap_llm_for_vision = [
-    "meta-llama/llama-4-scout-17b-16e-instruct",
+    "gpt-4o-mini",
     "gemini-2.5-flash-lite",
     "claude-3-haiku",
 ]
-cheap_llm_for_structured = [
-    "meta-llama/llama-4-scout-17b-16e-instruct", "mistral-small", "claude-3-haiku"]
+cheap_llm_for_structured = ["gpt-4o-mini", "mistral-small", "claude-3-haiku"]
 cheap_llm_for_creativity = [
-
-    "meta-llama/llama-4-scout-17b-16e-instruct",
+    "gemini-2.5-flash",
     "grok-3-mini",
     "gpt-4o-mini",
     "claude-4.5-haiku",
@@ -107,10 +104,10 @@ cheap_llm_for_creativity = [
 # Generation skills
 llm_for_factual_writing = { model = "base-gpt", temperature = 0.1 }
 llm_for_creative_writing = { model = "base-gpt", temperature = 0.9 }
-llm_for_writing_cheap = { model = "llama-3.1-8b-instant", temperature = 0.3 }
+llm_for_writing_cheap = { model = "gpt-4o-mini", temperature = 0.3 }
 
 # Retrieve and answer questions skills
-llm_to_answer_questions_cheap = { model = "meta-llama/llama-4-scout-17b-16e-instruct", temperature = 0.3 }
+llm_to_answer_questions_cheap = { model = "gpt-4o-mini", temperature = 0.3 }
 llm_to_answer_questions = { model = "base-claude", temperature = 0.3 }
 llm_to_retrieve = { model = "base-claude", temperature = 0.1 }
 
@@ -120,14 +117,14 @@ llm_to_code = { model = "base-claude", temperature = 0.1 }
 llm_to_analyze_large_codebase = { model = "base-claude", temperature = 0.1 }
 
 # Vision skills
-llm_for_img_to_text_cheap = { model = "meta-llama/llama-4-scout-17b-16e-instruct", temperature = 0.1 }
+llm_for_img_to_text_cheap = { model = "gpt-4o-mini", temperature = 0.1 }
 llm_for_img_to_text = { model = "base-claude", temperature = 0.1 }
 llm_for_diagram_to_text = { model = "base-claude", temperature = 0.3 }
 llm_for_table_to_text = { model = "base-claude", temperature = 0.3 }
 
 # Image generation prompting skills
 llm_to_prompt_img_gen = { model = "base-claude", temperature = 0.2 }
-llm_to_prompt_img_gen_cheap = { model = "meta-llama/llama-4-scout-17b-16e-instruct", temperature = 0.5 }
+llm_to_prompt_img_gen_cheap = { model = "gpt-4o-mini", temperature = 0.5 }
 
 # Groq-specific presets (fast inference, low cost)
 llm_groq_fast_text = { model = "fast-groq", temperature = 0.7 }
