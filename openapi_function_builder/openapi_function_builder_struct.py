@@ -1,6 +1,7 @@
 import inspect
 import json
 from typing import Any, Dict, List, Optional
+from urllib.parse import urlparse
 
 import requests
 from openapiclient import OpenAPIClient
@@ -149,34 +150,98 @@ class RequestDetails(StructuredContent):
 
 @pipe_func()
 async def invoke_function_api_backend(working_memory: WorkingMemory) -> TextContent:
+    """
+    Execute an API request using the RequestDetails struct.
+    Builds and performs the actual HTTP request using the requests library.
+    """
+    # Get the base URL from the OpenAPI spec
     openapi_url = working_memory.get_stuff_as_text("openapi_url").text.strip()
-    function_name_text = working_memory.get_stuff_as_text("function_name").text
-    function_name = function_name_text.strip("`")
-    function_parameters = working_memory.get_stuff_as(
-        "function_parameters", ListContent
-    )
+    request_details = working_memory.get_stuff_as("request_details", RequestDetails)
 
-    # Initialize the API factory with the OpenAPI definition
-    print(type(function_name))
-    print("About to call: " + function_name)
-    print(type(function_parameters))
-    param_dict = {}
-    for parameter in function_parameters.items:
-        p = FunctionParameter(**parameter.__dict__)
-        param_dict[p.name] = p.value
-        print(f"name: {p.name} val: {p.value} type: {p.type}")
+    # Get the base URL from the OpenAPI spec
+    response = requests.get(url=openapi_url)
+    spec_data = response.json()
 
-    # Initialize the API factory with the OpenAPI definition
-    api = OpenAPIClient(definition=openapi_url)
+    # Extract base URL from servers
+    base_url = None
+    if "servers" in spec_data and len(spec_data["servers"]) > 0:
+        base_url = spec_data["servers"][0].get("url", "")
 
-    # Use the async client with context manager
-    async with api.AsyncClient() as client:
-        # Show available operations
-        print("Operations:", client.operations)
-        print("Available functions:", client.functions)
-        print(f"Invoking desired function: {function_name}")
-        result = await client(method_name=function_name, parameters=param_dict)
-    return TextContent(text=str(result))
+    if not base_url or base_url == "":
+        raise ValueError("No server URL found in OpenAPI specification")
+
+    # Validate that base_url is a proper URL with protocol and host
+    parsed_url = urlparse(base_url)
+    if not parsed_url.scheme:
+        raise ValueError(f"Base URL missing protocol (http/https): {base_url}")
+    if not parsed_url.netloc:
+        raise ValueError(f"Base URL missing host: {base_url}")
+    if parsed_url.scheme not in ["http", "https"]:
+        raise ValueError(f"Base URL protocol must be http or https, got: {parsed_url.scheme}")
+
+    print(f"Base URL: {base_url}")
+    print(f"  Protocol: {parsed_url.scheme}")
+    print(f"  Host: {parsed_url.hostname}")
+    print(f"  Port: {parsed_url.port if parsed_url.port else 'default'}")
+    # Build the full URL with path parameters
+    url_path = request_details.path
+    if request_details.path_parameters:
+        for param_name, param_value in request_details.path_parameters.items():
+            url_path = url_path.replace(f"{{{param_name}}}", str(param_value))
+
+    full_url = f"{base_url.rstrip('/')}/{url_path.lstrip('/')}"
+
+    # Prepare request components
+    headers = {}
+    if request_details.header_parameters:
+        headers.update(request_details.header_parameters)
+
+    cookies = {}
+    if request_details.cookie_parameters:
+        cookies.update(request_details.cookie_parameters)
+
+    params = {}
+    if request_details.query_parameters:
+        params.update(request_details.query_parameters)
+
+    # Prepare request body
+    json_body = None
+    if request_details.request_body:
+        json_body = request_details.request_body
+
+    # Execute the HTTP request
+    print(f"Executing {request_details.http_method} request to {full_url}")
+    print(f"Query params: {params}")
+    print(f"Headers: {headers}")
+    print(f"Body: {json_body}")
+
+    try:
+        http_response = requests.request(
+            method=request_details.http_method,
+            url=full_url,
+            params=params if params else None,
+            headers=headers if headers else None,
+            cookies=cookies if cookies else None,
+            json=json_body if json_body else None,
+        )
+
+        # Raise an exception for HTTP errors
+        http_response.raise_for_status()
+
+        # Try to parse JSON response, fallback to text
+        try:
+            result = http_response.json()
+            return TextContent(text=json.dumps(result, indent=2))
+        except json.JSONDecodeError:
+            return TextContent(text=http_response.text)
+
+    except requests.exceptions.RequestException as e:
+        error_msg = f"Request failed: {str(e)}"
+        if hasattr(e, 'response') and e.response is not None:
+            error_msg += f"\nStatus code: {e.response.status_code}"
+            error_msg += f"\nResponse: {e.response.text}"
+        print(error_msg)
+        return TextContent(text=error_msg)
 
 
 @pipe_func()
