@@ -124,6 +124,29 @@ class FunctionDetails(StructuredContent):
     tags: Optional[List[str]] = Field(default=None, description="Operation tags")
 
 
+class RequestDetails(StructuredContent):
+    """Holds the actual parameter values needed to make an API request"""
+
+    function_name: str = Field(description="The operation ID / function name")
+    http_method: str = Field(description="HTTP method (GET, POST, PUT, DELETE, etc.)")
+    path: str = Field(description="API endpoint path")
+    query_parameters: Optional[Dict[str, Any]] = Field(
+        default=None, description="Query parameters and their values"
+    )
+    path_parameters: Optional[Dict[str, Any]] = Field(
+        default=None, description="Path parameters and their values"
+    )
+    header_parameters: Optional[Dict[str, Any]] = Field(
+        default=None, description="Header parameters and their values"
+    )
+    cookie_parameters: Optional[Dict[str, Any]] = Field(
+        default=None, description="Cookie parameters and their values"
+    )
+    request_body: Optional[Dict[str, Any]] = Field(
+        default=None, description="Request body data if applicable"
+    )
+
+
 @pipe_func()
 async def invoke_function_api_backend(working_memory: WorkingMemory) -> TextContent:
     openapi_url = working_memory.get_stuff_as_text("openapi_url").text.strip()

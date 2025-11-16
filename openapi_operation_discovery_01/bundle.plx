@@ -6,6 +6,7 @@ main_pipe = "build_function_info"
 OpenAPISpec = "Structured OpenAPI specification for the backend."
 FunctionInfo = "Information about a function in the OpenAPI spec."
 FunctionChoice = "Choice of OpenAPI function to accomplish an operation."
+RequestDetails = "Request Details containing actual values for the request"
 
 [concept.OpenAPIURL]
 description = "The URL of the OpenAPI JSON spec"
@@ -49,14 +50,15 @@ description = """
 Main pipeline that builds the function name and function parameters and values necessary for the task based on the OpenAPI JSON spec and the operation to accomplish.
 """
 inputs = { openapi_url = "OpenAPIURL", operation_to_accomplish = "OperationToAccomplish" }
-# output = "ApiResponseResult"
-output = "FunctionDetails"
+output = "ApiResponseResult"
+#output = "FunctionDetails"
 steps = [
     { pipe = "obtain_api_spec", result = "openapi_spec"},
     { pipe = "extract_available_functions", result = "function_info" },
     { pipe = "choose_function", result = "function_choice" },
     { pipe = "get_function_details", result = "function_details" },
-    # { pipe = "execute_api_call", result = "result_api_call" },
+    { pipe = "prepare_request", result = "request_details"},
+    { pipe = "execute_api_call", result = "result_api_call" },
 ]
 # [pipe.obtain_api_spec]
 # type = "PipeFunc"
@@ -159,10 +161,27 @@ output = "FunctionDetails"
 function_name = "get_function_details"
 
 
+
+[pipe.prepare_request]
+type = "PipeLLM"
+description = "Prepares the request body corresponding to the actual request"
+inputs = {  operation_to_accomplish = "OperationToAccomplish", function_details = "FunctionDetails" }
+output = "RequestDetails"
+model = "llm_to_engineer"
+prompt = """
+Based on the operation to accomplish and the available OpenAPI functions, fill in the actual values for the current request.
+
+@operation_to_accomplish
+
+@function_details
+
+"""
+
+
 [pipe.execute_api_call]
 type = "PipeFunc"
 description = "Execute the API request given a CompiledFunctionInfo."
-inputs = { compiled_function_info = "CompiledFunctionInfo" }
+inputs = { request_details = "RequestDetails" }
 output = "ApiResponseResult"
 function_name = "invoke_function_api_backend"
 
